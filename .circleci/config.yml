@@ -1,46 +1,52 @@
-# Java Gradle CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
-version: 2
-jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/repo
-
-    environment:
-      # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
+--- 
+jobs: 
+  build: 
+    docker: 
+      - 
+        image: "circleci/openjdk:8-jdk"
+    environment: 
+      JVM_OPTS: "-Xmx3200m"
       TERM: dumb
-    
-    steps:
+    steps: 
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: gradle dependencies
+      - 
+        restore_cache: 
+          keys: 
+            - "v1-dependencies-{{ checksum \"build.gradle\" }}"
+            - v1-dependencies-
+      - 
+        run: "gradle dependencies"
       - 
         run: "gradle build"
-     
-
-      - save_cache:
-          paths:
+      - 
+        run: 
+          command: |
+              curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+              sudo dpkg -i cf-cli_amd64.deb
+              cf -v
+              cf api https://api.run.pivotal.io  # alternately target your private Cloud Foundry deployment
+              cf auth "$CF_USER" "$CF_PASSWORD"
+              cf target -o "$CF_ORG" -s "$CF_SPACE"
+          name: "Setup CF CLI"
+      - 
+        run: 
+          command: "# Send \"real\" url to new version\n\
+              cf map-route app-name-dark example.com -n www\n\
+              # Stop sending traffic to previous version\n\
+              cf unmap-route app-name example.com -n www\n\
+              # stop previous version\n\
+              cf stop app-name\n\
+              # delete previous version\n\
+              cf delete app-name -f\n\
+              # Switch name of \"dark\" version to claim correct name\n\
+              cf rename app-name-dark app-name \n"
+          name: "Re-route live Domain to latest"
+      - 
+        save_cache: 
+          key: "v1-dependencies-{{ checksum \"build.gradle\" }}"
+          paths: 
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-        
-      # run tests!
-      - run: gradle test
-
+      - 
+        run: "gradle test"
+    working_directory: ~/repo
+version: 2
