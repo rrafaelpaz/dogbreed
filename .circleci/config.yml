@@ -30,7 +30,7 @@ jobs:
           name: "Setup CF CLI"
       - 
         run: 
-          command: cf push
+          command: cf target -o ORG
           name: "Pushing app"
       - 
         save_cache: 
