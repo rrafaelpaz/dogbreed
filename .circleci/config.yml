@@ -32,7 +32,9 @@ jobs:
         run: 
           command: cf target -o rafaelpaz
           name: "Setting up Org"
-          
+      - 
+        run: "cd /tmp/app/build/libs && cf push au.com.dogs.springboot-0.0.1-SNAPSHOT.jar"
+       
       - 
         run: 
           command: cf push dogbreed
@@ -44,5 +46,5 @@ jobs:
             - ~/.gradle
       - 
         run: "gradle test"
-    working_directory: ~/repo
+    working_directory: /tmp/app
 version: 2
