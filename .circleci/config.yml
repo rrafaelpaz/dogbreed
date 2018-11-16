@@ -30,11 +30,8 @@ jobs:
           name: "Setup CF CLI"
       - 
         run: 
-          command: cf target -o rafaelpaz
-          name: "Setting up Org"
-      -
-        run: cf target -s rafaelTargetSpace
-        name: "Setting up Target space"
+          command: cf target -o rafaelpaz -s rafaelTargetSpace
+          name: "Setting up Org and target space"
       - 
         run: 
           command: cd /tmp/app/build/libs && cf push dogbreed -p au.com.dogs.springboot-0.0.1-SNAPSHOT.jar
