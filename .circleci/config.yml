@@ -30,7 +30,7 @@ jobs:
           name: "Setup CF CLI"
       - 
         run: 
-          command: cf target -o rafaelpaz -s rafaelTargetSpace
+          command: cf target -o Rafael-186420 -s development
           name: "Setting up Org and target space"
       - 
         run: 
