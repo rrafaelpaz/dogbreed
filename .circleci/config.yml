@@ -30,7 +30,7 @@ jobs:
           name: "Setup CF CLI"
       - 
         run: 
-          command: cf target -o ORG
+          command: cf target -o RafaelPaz-Org
           name: "Pushing app"
       - 
         save_cache: 
