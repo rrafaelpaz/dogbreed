@@ -37,10 +37,8 @@ jobs:
           command: cd /tmp/app/build/libs && cf push dogbreed -p au.com.dogs.springboot-0.0.1-SNAPSHOT.jar
           name: "Pushing app"
           
-      -
-        run:
-        command: cf logs dogbreed --recent
-        name: "What happened"
+      - 
+        run: cf logs dogbreed --recent
       - 
         save_cache: 
           key: "v1-dependencies-{{ checksum \"build.gradle\" }}"
