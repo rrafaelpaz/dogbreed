@@ -30,17 +30,8 @@ jobs:
           name: "Setup CF CLI"
       - 
         run: 
-          command: "# Send \"real\" url to new version\n\
-              cf map-route app-name-dark example.com -n www\n\
-              # Stop sending traffic to previous version\n\
-              cf unmap-route app-name example.com -n www\n\
-              # stop previous version\n\
-              cf stop app-name\n\
-              # delete previous version\n\
-              cf delete app-name -f\n\
-              # Switch name of \"dark\" version to claim correct name\n\
-              cf rename app-name-dark app-name \n"
-          name: "Re-route live Domain to latest"
+          command: cf push
+          name: "Pushing app"
       - 
         save_cache: 
           key: "v1-dependencies-{{ checksum \"build.gradle\" }}"
