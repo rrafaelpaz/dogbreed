@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,8 +34,8 @@ public class DogController {
 		return new ResponseEntity<Dog>(insertedDog, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/retrieve", method = RequestMethod.GET, headers = "Accept=application/json")
-	public ResponseEntity<?> getDogBreedById(@RequestParam("id") Long id) {
+	@RequestMapping(value = "/retrieve/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<?> getDogBreedById(@PathVariable("id") Long id) {
 		Dog dog = dogService.findById(id);
 		if (dog == null) {
 			return new ResponseEntity<Object>("Dog with id " + id + " not found", HttpStatus.NOT_FOUND);
