@@ -58,7 +58,7 @@ public class DogController {
 	}
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET, headers = "Accept=application/json")
-	public ResponseEntity<List<Dog>> findAllDogs(@PathVariable("name") String breedName) {
+	public ResponseEntity<List<Dog>> findAllDogs() {
 		List<Dog> response = dogService.findByAllDogs();
 		if (response.isEmpty() || response == null) {
 			return new ResponseEntity<List<Dog>>(HttpStatus.NOT_FOUND);
