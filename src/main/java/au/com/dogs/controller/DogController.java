@@ -56,6 +56,15 @@ public class DogController {
 		return new ResponseEntity<Dog>(HttpStatus.NO_CONTENT);
 
 	}
+	
+	@RequestMapping(value = "/all", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<List<Dog>> findAllDogs(@PathVariable("name") String breedName) {
+		List<Dog> response = dogService.findByAllDogs();
+		if (response.isEmpty() || response == null) {
+			return new ResponseEntity<List<Dog>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Dog>>(response, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/breedname/{name}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public ResponseEntity<List<Dog>> findByBreedName(@PathVariable("name") String breedName) {

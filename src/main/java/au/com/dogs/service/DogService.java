@@ -37,6 +37,11 @@ public class DogService {
 	}
 	
 	@Transactional
+	public List<Dog> findByAllDogs(){
+		return dogDao.findAll();
+	}
+	
+	@Transactional
 	public List<Dog> findByBreedName(String breedName){
 		return dogDao.searchByBreedName(breedName);
 	}
