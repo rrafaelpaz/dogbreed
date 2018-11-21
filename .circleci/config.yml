@@ -25,12 +25,12 @@ jobs:
               sudo dpkg -i cf-cli_amd64.deb
               cf -v
               cf api https://api.run.pivotal.io  # alternately target your private Cloud Foundry deployment
-              cf auth "rrafaelpaz@gmail.com" "!Cranberries@2018"
+              cf auth "$CF_USER" "$CF_PASSWORD"
               
           name: "Setup CF CLI"
       - 
         run: 
-          command: cf target -o Rafael-186420 -s development
+          command: cf target -o "$CF_ORG" -s "$CF_SPACE"
           name: "Setting up Org and target space"
       - 
         run: 
